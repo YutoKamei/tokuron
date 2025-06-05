@@ -9,9 +9,9 @@ const app = new OpenAPIHono()
 
 app.use(logger())
 
-//app.get('/', (c) => {
-//  return c.text('Hello Hono!')
-//})
+app.get('/', (c) => {
+  return c.text('Hello Hono!')
+})
 
 app.openapi(
   createRoute({
@@ -48,10 +48,10 @@ app.get('/ui',
   })
 )
 
-app.get('/api', (c) => {
-  const query = c.req.query('name');
-  return c.json({ message: `Hello ${query}!`})
-})
+// app.get('/api', (c) => {
+//  const query = c.req.query('name');
+//  return c.json({ message: `Hello ${query}!`})
+//})
 
 app.post('/api',
   zValidator('form', z.object({body: z.string()})),
