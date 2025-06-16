@@ -1,7 +1,7 @@
 import type { DBEntity } from "../models/db";  
 import type { IDatabaseResource } from "./types";
 
-export class SimpleInMemoryStorage<T extends S & DBEntity, S>
+export class SimpleInMemoryResource<T extends S & DBEntity, S>
     implements IDatabaseResource<T, S>
 {
     data: Array<T> = [];
