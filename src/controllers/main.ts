@@ -1,16 +1,13 @@
 import { Hono } from "hono";
 import type { ContextVariables } from "../constants";
 import { API_PREFIX } from "../constants";
+import { env } from 'cloudflare:workers'
+import { 
+    UserSQLResource,
+    ChatSQLResource,
+    MessageSQLResource,
+ } from "../storage/sql";
 import { attachUserId, checkJWTAuth } from "../middlewares/auth";
-import type { 
-    DBCreateUser,
-    DBUser,
-    DBChat,
-    DBCreateChat,
-    DBCreateMessage,
-    DBMessage
-} from "../models/db";
-import { SimpleInMemoryResource } from "../storage/in_memory";
 import { AUTH_PREFIX, createAuthApp } from "./auth";
 import { CHAT_PREFIX, createChatApp } from "./chat";
 
@@ -28,12 +25,12 @@ export function createMainApp(
     return app;
 }
 
-export function createInMemoryApp() {
+export function createSQLApp() {
     return createMainApp(
-        createAuthApp(new SimpleInMemoryResource<DBUser, DBCreateUser>()),
+        createAuthApp(new UserSQLResource(env.DB)),
         createChatApp(
-            new SimpleInMemoryResource<DBChat, DBCreateChat>(),
-            new SimpleInMemoryResource<DBMessage, DBCreateMessage>(),
-        )
+            new ChatSQLResource(env.DB), 
+            new MessageSQLResource(env.DB),
+        ),
     );
 }
