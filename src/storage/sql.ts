@@ -184,7 +184,7 @@ export class MessageSQLResource implements IDatabaseResource<DBMessage, DBCreate
   async create(data: DBCreateMessage): Promise<DBMessage> {
     const result = await this.db
       .insert(messageTable)
-      .values({ message: data.message, chatId: data.chatId, type: data.type })
+      .values({ message: data.message, chatId: Number(data.chatId), type: data.type })
       .returning()
       .get();
     return result as DBMessage;
